@@ -10,6 +10,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -22,6 +26,7 @@ import java.util.Random;
  * TODO: document your custom view class.
  */
 public class SpaceRunnerView extends View implements Runnable {
+    private SoundPool soundPool;
     private int displayWidth;
     private int displayHeight;
     private int objectDelay;
@@ -31,29 +36,41 @@ public class SpaceRunnerView extends View implements Runnable {
     private Ship ship;
     private DropableObjects objects;
     private int delay;
+    private int crashSound;
+    private int scoreSound;
 
-    public SpaceRunnerView(Context context) {
-        super(context);
-        init(context);
-    }
-
-    public SpaceRunnerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
-
-    public SpaceRunnerView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context);
-    }
-
-    private void init(Context context) {
+    public SpaceRunnerView(GameActivity gameActivity) {
+        super(gameActivity);
         this.isRunning = true;
         this.ship = new Ship(getResources());
         this.classesExists = true;
         this.objects = new DropableObjects();
-        this.objectDelay = 500;
+        this.objectDelay = 200;
         this.delay = 0;
+
+
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
+        this.soundPool = new SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        this.crashSound = this.soundPool.load(gameActivity, R.raw.crash, 1);
+        this.scoreSound = this.soundPool.load(gameActivity, R.raw.score, 1);
+    }
+
+    public SpaceRunnerView(Context context) {
+        super(context);
+    }
+
+    public SpaceRunnerView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public SpaceRunnerView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
     }
 
     public void resume() {
@@ -84,8 +101,10 @@ public class SpaceRunnerView extends View implements Runnable {
             Random randomGenerator = new Random();
             int isCoin = randomGenerator.nextInt(3);
 
-            Log.d("generate", "isCoin " + isCoin);
-            this.objects.add(isCoin == 0?new Coin(getResources(), this.displayWidth, this.displayHeight) : new Asteroid(getResources(), this.displayWidth, this.displayHeight));
+            Log.d("generate", "isCoin " + (isCoin == 0));
+            this.objects.add(isCoin == 0
+                    ? new Coin(getResources(), this.soundPool, this.scoreSound, this.displayWidth, this.displayHeight)
+                    : new Asteroid(getResources(), this.soundPool, this.crashSound, this.displayWidth, this.displayHeight));
         } else {
             this.objects.clear();
         }

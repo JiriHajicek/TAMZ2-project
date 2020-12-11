@@ -3,12 +3,15 @@ package com.example.tamz2_project;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.SoundPool;
 
 import java.util.Random;
 
 public class Asteroid extends DropableObject {
-    public Asteroid(Resources resources, int displayWidth, int displayHeight) {
+    public Asteroid(Resources resources, SoundPool soundPool, int sound, int displayWidth, int displayHeight) {
         Random randomGenerator = new Random();
+        this.soundPool = soundPool;
+        this.sound = sound;
         this.displayWidth = displayWidth;
         this.displayHeight = displayHeight;
         this.x = randomGenerator.nextInt(displayWidth - width) + width/2;
@@ -31,6 +34,7 @@ public class Asteroid extends DropableObject {
 
     @Override
     public void onTouch(Ship ship) {
+        this.soundPool.play(this.sound, 1 , 1, 0, 0, 1);
         ship.onAsteroidHit();
     }
 }

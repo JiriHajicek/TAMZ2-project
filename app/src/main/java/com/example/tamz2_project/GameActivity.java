@@ -12,8 +12,8 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.space_runner_view);
 
-
-        spaceRunnerView = findViewById(R.id.spaceRunnerView);
+        this.spaceRunnerView = new SpaceRunnerView(this);
+        setContentView(this.spaceRunnerView);
     }
 
     @Override

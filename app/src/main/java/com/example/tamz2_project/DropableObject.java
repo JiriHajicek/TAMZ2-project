@@ -3,6 +3,7 @@ package com.example.tamz2_project;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.media.SoundPool;
 
 abstract class DropableObject implements Dropable{
     protected final int width = 50;
@@ -13,6 +14,8 @@ abstract class DropableObject implements Dropable{
     protected int displayHeight;
     protected Bitmap image;
     protected int speed;
+    protected int sound;
+    protected SoundPool soundPool;
 
     @Override
     public void render(Canvas canvas) {
