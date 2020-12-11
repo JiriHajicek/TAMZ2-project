@@ -16,16 +16,21 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Random;
+
 /**
  * TODO: document your custom view class.
  */
 public class SpaceRunnerView extends View implements Runnable {
     private int displayWidth;
     private int displayHeight;
+    private int objectDelay;
     private Thread thread;
     private boolean isRunning;
     private boolean classesExists;
     private Ship ship;
+    private DropableObjects objects;
+    private int delay;
 
     public SpaceRunnerView(Context context) {
         super(context);
@@ -46,6 +51,9 @@ public class SpaceRunnerView extends View implements Runnable {
         this.isRunning = true;
         this.ship = new Ship(getResources());
         this.classesExists = true;
+        this.objects = new DropableObjects();
+        this.objectDelay = 500;
+        this.delay = 0;
     }
 
     public void resume() {
@@ -70,6 +78,19 @@ public class SpaceRunnerView extends View implements Runnable {
             e.printStackTrace();
         }
     }
+
+    private void generateObject() {
+        if(this.ship.isAlive()){
+            Random randomGenerator = new Random();
+            int isCoin = randomGenerator.nextInt(3);
+
+            Log.d("generate", "isCoin " + isCoin);
+            this.objects.add(isCoin == 0?new Coin(getResources(), this.displayWidth, this.displayHeight) : new Asteroid(getResources(), this.displayWidth, this.displayHeight));
+        } else {
+            this.objects.clear();
+        }
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -95,7 +116,12 @@ public class SpaceRunnerView extends View implements Runnable {
     public void run() {
         while(this.isRunning) {
             invalidate();
+            if(this.delay == this.objectDelay){
+               this.generateObject();
+                this.delay = 0;
+            }
             sleep();
+            this.delay += 1;
         }
     }
 
@@ -113,6 +139,7 @@ public class SpaceRunnerView extends View implements Runnable {
 
         if(this.classesExists) {
             this.ship.render(canvas);
+            this.objects.render(canvas, this.ship);
         }
     }
 }
