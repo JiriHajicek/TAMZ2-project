@@ -2,7 +2,6 @@ package com.example.tamz2_project;
 
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 
 import java.util.Random;

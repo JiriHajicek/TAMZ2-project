@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 
@@ -17,6 +19,7 @@ public class Ship {
     private int health;
     private int score;
     private Bitmap shipImage;
+    private Bitmap hearthImage;
     private boolean moveLeft;
     private boolean moveRight;
     private boolean sizesSet;
@@ -26,6 +29,7 @@ public class Ship {
         this.y = 0;
         this.displayWidth = 0;
         this.shipImage = BitmapFactory.decodeResource(resources, R.drawable.spaceship);
+        this.hearthImage = BitmapFactory.decodeResource(resources, R.drawable.heart);
         this.moveRight = false;
         this.moveLeft = false;
         this.sizesSet = false;
@@ -45,6 +49,14 @@ public class Ship {
     public void render(Canvas canvas) {
         move();
         canvas.drawBitmap(shipImage, null, new Rect(x - shipWidth/2, y - shipHeight,x + shipWidth/2, y), null);
+        for(int i = 0; i<health; i+=1){
+            canvas.drawBitmap(this.hearthImage,null, new Rect(this.displayWidth - 25 - i*100, 25, this.displayWidth - 30 - 50 - i*100,75 ), null);
+        }
+
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(50);
+        canvas.drawText("Score: " + this.score,  25, 75, paint);
     }
 
     public void setMoveRight(boolean value){
