@@ -1,6 +1,7 @@
 package com.example.tamz2_project;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -38,6 +39,7 @@ public class SpaceRunnerView extends View implements Runnable {
     private int delay;
     private int crashSound;
     private int scoreSound;
+    private GameActivity gameActivity;
 
     public SpaceRunnerView(GameActivity gameActivity) {
         super(gameActivity);
@@ -45,9 +47,9 @@ public class SpaceRunnerView extends View implements Runnable {
         this.ship = new Ship(getResources());
         this.classesExists = true;
         this.objects = new DropableObjects();
-        this.objectDelay = 200;
+        this.objectDelay = 100;
         this.delay = 0;
-
+        this.gameActivity = gameActivity;
 
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -107,6 +109,9 @@ public class SpaceRunnerView extends View implements Runnable {
                     : new Asteroid(getResources(), this.soundPool, this.crashSound, this.displayWidth, this.displayHeight));
         } else {
             this.objects.clear();
+            Intent i = new Intent(this.gameActivity.getApplicationContext(), ShowScoreActivity.class);
+            i.putExtra("score", this.ship.getScore());
+            this.gameActivity.startActivity(i);
         }
     }
 

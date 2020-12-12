@@ -94,4 +94,8 @@ public class Ship {
     public boolean isAlive(){
         return this.health > 0;
     }
+
+    public int getScore(){
+        return this.score;
+    }
 }

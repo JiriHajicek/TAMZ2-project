@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         playButton = (Button)findViewById(R.id.play_button);
     }
 
-    public void onButtonClickCancel(View view) {
+    public void onPlayButtonClick(View view) {
         Intent i = new Intent(getApplicationContext(), GameActivity.class);
         startActivity(i);
     }
