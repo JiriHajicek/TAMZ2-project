@@ -103,7 +103,6 @@ public class SpaceRunnerView extends View implements Runnable {
             Random randomGenerator = new Random();
             int isCoin = randomGenerator.nextInt(3);
 
-            Log.d("generate", "isCoin " + (isCoin == 0));
             this.objects.add(isCoin == 0
                     ? new Coin(getResources(), this.soundPool, this.scoreSound, this.displayWidth, this.displayHeight)
                     : new Asteroid(getResources(), this.soundPool, this.crashSound, this.displayWidth, this.displayHeight));

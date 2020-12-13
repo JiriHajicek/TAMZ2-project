@@ -23,4 +23,9 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(getApplicationContext(), GameActivity.class);
         startActivity(i);
     }
+
+    public void onShowScoresButtonClick(View view){
+        Intent i = new Intent(getApplicationContext(), HighScoresActivity.class);
+        startActivity(i);
+    }
 }

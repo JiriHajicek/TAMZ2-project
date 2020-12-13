@@ -22,6 +22,7 @@ public class Coin extends DropableObject {
 
     @Override
     public void onTouch(Ship ship) {
+        System.out.print(this.sound);
         this.soundPool.play(this.sound, 1 , 1, 0, 0, 1);
         ship.onCoinHit();
     }
