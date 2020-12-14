@@ -86,5 +86,6 @@ public class ShowScoreActivity extends AppCompatActivity {
         editor.putString("scores",stringArray);
         editor.apply();
         Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+        scoreName.setText("");
     }
 }
